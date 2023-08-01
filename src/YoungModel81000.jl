@@ -18,6 +18,8 @@ function config(portname::String)
     LibSerialPort.sp_set_config_bits(config, 8)
     LibSerialPort.sp_set_config_stopbits(config, 1)
 
+    LibSerialPort.sp_set_config(port, config)
+    
     return port
 end
 
@@ -29,7 +31,7 @@ function stream(port::Ptr{LibSerialPort.Lib.SPPort}, file::String)
     function read(port, file)
         try
             tc = Dates.format(now(), "yy-mm-ddTHH:MM:SS:ss")
-            nbytes_read, bytes = LibSerialPort.sp_nonblocking_read(port, 72)
+            nbytes_read, bytes = LibSerialPort.sp_nonblocking_read(port, 100)
             str = String(bytes[1:nbytes_read])
             
             tmp = split(str, "\r") 
